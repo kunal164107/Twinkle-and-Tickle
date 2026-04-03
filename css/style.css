@@ -52,9 +52,7 @@ body {
 }
 
 .navbar {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     padding: 20px 0;
     background: transparent;
@@ -63,7 +61,6 @@ body {
 }
 
 .navbar.scrolled {
-    position: fixed;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(10px);
     box-shadow: var(--shadow-md);
@@ -357,11 +354,14 @@ section {
     border-radius: 20px;
     overflow: hidden;
     box-shadow: var(--shadow-xl);
+    min-height: 400px;
+    background: var(--bg-light);
 }
 
 .image-wrapper img {
     width: 100%;
-    height: auto;
+    height: 400px;
+    object-fit: cover;
     display: block;
 }
 
@@ -1143,6 +1143,14 @@ section {
 
     .float-item {
         font-size: 50px;
+    }
+
+    .image-wrapper {
+        min-height: 250px;
+    }
+
+    .image-wrapper img {
+        height: 250px;
     }
 }
 
