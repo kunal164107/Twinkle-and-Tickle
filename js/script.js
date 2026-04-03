@@ -132,9 +132,8 @@ testimonials.forEach((_, index) => {
     dotsContainer.appendChild(dot);
 });
 
-const dots = document.querySelectorAll('.dot');
-
 function showTestimonial(index) {
+    const dots = document.querySelectorAll('.dot');
     testimonials.forEach(t => t.classList.remove('active'));
     dots.forEach(d => d.classList.remove('active'));
     
@@ -158,63 +157,20 @@ setInterval(() => {
     showTestimonial(currentTestimonial);
 }, 5000);
 
-// Initialize EmailJS
-(function() {
-    emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your EmailJS User ID
-})();
-
 const contactForm = document.getElementById('contactForm');
-const submitBtn = contactForm.querySelector('.submit-btn');
 
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Show loading state
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span>Sending...</span><i class="fas fa-spinner fa-spin"></i>';
-    submitBtn.disabled = true;
-    
-    // Get form data
-    const formData = new FormData(contactForm);
-    const templateParams = {
-        from_name: formData.get('name'),
-        from_email: formData.get('email'),
-        phone: formData.get('phone'),
-        child_age: formData.get('childAge') || 'Not specified',
-        message: formData.get('message'),
-        to_name: 'Twinkle and Tickle Team'
-    };
-    
-    // Send email using EmailJS
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-        .then(function(response) {
-            // Success
-            alert(`Thank you ${templateParams.from_name}! Your message has been sent successfully. We'll get back to you soon at ${templateParams.from_email}.`);
-            contactForm.reset();
-        }, function(error) {
-            // Error - fallback to mailto
-            console.log('EmailJS failed:', error);
-            
-            // Create mailto link as fallback
-            const subject = encodeURIComponent('Inquiry from ' + templateParams.from_name);
-            const body = encodeURIComponent(
-                `Name: ${templateParams.from_name}\n` +
-                `Email: ${templateParams.from_email}\n` +
-                `Phone: ${templateParams.phone}\n` +
-                `Child's Age: ${templateParams.child_age}\n\n` +
-                `Message:\n${templateParams.message}`
-            );
-            
-            window.location.href = `mailto:info@twinkleandtickle.com?subject=${subject}&body=${body}`;
-            
-            alert(`Your email client will now open. If it doesn't work, please email us directly at info@twinkleandtickle.com with your inquiry.`);
-        })
-        .finally(function() {
-            // Reset button
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        });
-});
+if (contactForm && !contactForm.hasAttribute('action')) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(contactForm);
+        const data = Object.fromEntries(formData);
+        
+        alert(`Thank you for your message, ${data.name}! We'll get back to you soon at ${data.email}.`);
+        
+        contactForm.reset();
+    });
+}
 
 const observerOptions = {
     threshold: 0.1,
@@ -247,8 +203,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 top: offsetTop,
                 behavior: 'smooth'
             });
+        }
     });
-}
+});
 
 const newsletterForm = document.querySelector('.newsletter-form');
 if (newsletterForm) {
